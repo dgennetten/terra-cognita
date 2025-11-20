@@ -329,8 +329,7 @@ p {
 
     .score-board {
         right: 1rem;
-        top: auto;
-        bottom: calc(40vh + 1rem);
+        top: 1rem;
         font-size: 0.85rem;
         padding: 0.5rem 1rem;
         gap: 1rem;
