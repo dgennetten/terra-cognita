@@ -12,6 +12,52 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ gameState, onNextRound, isSidebarOpen, onShowTarget, showTargetInfo = false }) => {
     const { targetCountry, selectedCountry, lastResult } = gameState;
+    const [isResizing, setIsResizing] = useState(false);
+    const [sidebarHeight, setSidebarHeight] = useState(40); // percentage
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        setIsResizing(true);
+        e.preventDefault();
+    };
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setIsResizing(true);
+        e.preventDefault();
+    };
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!isResizing) return;
+            const windowHeight = window.innerHeight;
+            const newHeight = ((windowHeight - e.clientY) / windowHeight) * 100;
+            setSidebarHeight(Math.min(Math.max(newHeight, 20), 80));
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (!isResizing || !e.touches[0]) return;
+            const windowHeight = window.innerHeight;
+            const newHeight = ((windowHeight - e.touches[0].clientY) / windowHeight) * 100;
+            setSidebarHeight(Math.min(Math.max(newHeight, 20), 80));
+        };
+
+        const handleEnd = () => {
+            setIsResizing(false);
+        };
+
+        if (isResizing) {
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleEnd);
+            document.addEventListener('touchmove', handleTouchMove);
+            document.addEventListener('touchend', handleEnd);
+        }
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleEnd);
+            document.removeEventListener('touchmove', handleTouchMove);
+            document.removeEventListener('touchend', handleEnd);
+        };
+    }, [isResizing]);
 
     if (!targetCountry) return <div className={`sidebar ${!isSidebarOpen ? 'collapsed' : ''}`}><div className="panel-header">Loading...</div></div>;
 
@@ -20,7 +66,16 @@ const Sidebar: React.FC<SidebarProps> = ({ gameState, onNextRound, isSidebarOpen
     const displayCountry = (isWin || showTargetInfo) ? targetCountry : (selectedCountry || targetCountry);
 
     return (
-        <div className={`sidebar ${!isSidebarOpen ? 'collapsed' : ''}`}>
+        <div
+            className={`sidebar ${!isSidebarOpen ? 'collapsed' : ''}`}
+            style={{ height: window.innerWidth <= 768 ? `${sidebarHeight}vh` : '100%' }}
+        >
+            <div
+                className="resize-handle"
+                onMouseDown={handleMouseDown}
+                onTouchStart={handleTouchStart}
+            />
+
             <div className="panel-header">
                 {isGameActive ? (
                     <div>

@@ -263,3 +263,103 @@ p {
     padding: 0.5rem;
     border-radius: 6px;
 }
+
+/* Resize Handle */
+.resize-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    cursor: ns-resize;
+    background: transparent;
+    z-index: 30;
+    display: none;
+    /* Hidden on desktop */
+}
+
+.resize-handle::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.resize-handle:hover::before,
+.resize-handle:active::before {
+    background: var(--accent);
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    .map-container {
+        flex: 1;
+        height: auto;
+    }
+
+    .sidebar {
+        width: 100% !important;
+        height: 40vh;
+        min-height: 200px;
+        max-height: 80vh;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        position: relative;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar.collapsed {
+        transform: translateY(100%);
+        height: 0;
+    }
+
+    .resize-handle {
+        display: block;
+    }
+
+    .score-board {
+        right: 1rem;
+        top: auto;
+        bottom: calc(40vh + 1rem);
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+        gap: 1rem;
+    }
+
+    .score-value {
+        font-size: 1.2rem;
+    }
+
+    .game-controls {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+
+    .panel-header {
+        padding: 1rem;
+        padding-top: 1.5rem;
+        /* Extra space for resize handle */
+    }
+
+    .panel-header h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .panel-header h2 {
+        font-size: 1rem !important;
+    }
+
+    .country-flag {
+        height: 120px;
+    }
+}
