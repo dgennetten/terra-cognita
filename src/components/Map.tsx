@@ -101,14 +101,14 @@ const Map: React.FC<MapProps> = ({ projection, onCountryClick, highlightedCountr
                                             default: {
                                                 fill: fillColor,
                                                 stroke: "var(--map-stroke)",
-                                                strokeWidth: 0.75,
+                                                strokeWidth: 0.5 / position.zoom,
                                                 outline: "none",
                                                 transition: "all 0.2s"
                                             },
                                             hover: {
                                                 fill: "var(--map-hover)",
                                                 stroke: "var(--text-primary)",
-                                                strokeWidth: 1,
+                                                strokeWidth: 0.75 / position.zoom,
                                                 outline: "none",
                                                 cursor: "pointer"
                                             },
