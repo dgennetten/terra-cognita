@@ -9,7 +9,7 @@ import 'react-tooltip/dist/react-tooltip.css';
 function App() {
     const [countries, setCountries] = useState<Country[]>([]);
     const [loading, setLoading] = useState(true);
-    const [projection, setProjection] = useState<ProjectionType>('geoMercator');
+    const [projection, setProjection] = useState<ProjectionType>('geoEqualEarth');
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const [gameState, setGameState] = useState<GameState>({
